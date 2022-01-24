@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <data id="securities">
+        <rows>
+            <row SECID="USD000UTSTOM" BOARDID="CETS" SHORTNAME="USDRUB_TOM" LOTSIZE="1000" SETTLEDATE="2021-01-11"
+                 DECIMALS="4" FACEVALUE="1" MARKETCODE="CURR" MINSTEP="0.0025" PREVDATE="2020-12-29"
+                 SECNAME="USDRUB_TOM - USD/РУБ" REMARKS="" STATUS="A" FACEUNIT="USD" PREVPRICE="74.0375"
+                 PREVWAPRICE="73.6584" CURRENCYID="RUB" LATNAME="USDRUB_TOM - USD/RUB"/>
+        </rows>
+    </data>
+    <data id="marketdata">
+        <rows>
+            <row HIGHBID="" BIDDEPTH="" LOWOFFER="" OFFERDEPTH="" SPREAD="0" HIGH="74.99" LOW="73.525" OPEN="73.5825"
+                 LAST="74.415" LASTCNGTOLASTWAPRICE="0" VALTODAY="257011579995" VOLTODAY="3456437000"
+                 VALTODAY_USD="3456437000" WAPRICE="74.3574" WAPTOPREVWAPRICE="0.699" CLOSEPRICE="73.8757"
+                 NUMTRADES="65036" TRADINGSTATUS="N" UPDATETIME="23:50:02" BOARDID="CETS" SECID="USD000UTSTOM"
+                 WAPTOPREVWAPRICEPRCNT="0.95" BID="" BIDDEPTHT="" NUMBIDS="" OFFER="" OFFERDEPTHT="" NUMOFFERS=""
+                 CHANGE="0.3775" LASTCHANGEPRCNT="0" VALUE="3571920" VALUE_USD="48000" SEQNUM="366101" QTY="48"
+                 TIME="23:49:59" PRICEMINUSPREVWAPRICE="0.7566" LASTCHANGE="0" LASTTOPREVPRICE="0.51"
+                 VALTODAY_RUR="257011579995" SYSTIME="2021-01-01 00:05:26" MARKETPRICE="73.5142" MARKETPRICETODAY=""
+                 MARKETPRICE2="74.216" ADMITTEDQUOTE=""/>
+        </rows>
+    </data>
+    <data id="dataversion">
+        <rows>
+            <row data_version="4188" seqnum="364584"/>
+        </rows>
+    </data>
+    <data id="marketdata_yields">
+        <rows>
+        </rows>
+    </data>
+</document>

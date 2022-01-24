@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <data id="securities">
+        <rows>
+        </rows>
+    </data>
+    <data id="marketdata">
+        <rows>
+        </rows>
+    </data>
+    <data id="dataversion">
+        <rows>
+            <row data_version="5997" seqnum="1731486"/>
+        </rows>
+    </data>
+    <data id="marketdata_yields">
+        <rows>
+            <row SECID="RU000A100YG1" BOARDID="TQCB" PRICE="106.7" YIELDDATE="2022-10-19"
+                 ZCYCMOMENT="2021-01-14 18:30:08" YIELDDATETYPE="MATDATE" EFFECTIVEYIELD="8.1054" DURATION="576"
+                 ZSPREADBP="354" GSPREADBP="358" WAPRICE="106.8" EFFECTIVEYIELDWAPRICE="8.0429" DURATIONWAPRICE="576"
+                 IR="" ICPI="" BEI="" CBR="" YIELDTOOFFER="" YIELDLASTCOUPON="" TRADEMOMENT="2021-01-14 18:30:15"
+                 SEQNUM="1610639100947" SYSTIME="2021-01-14 18:45:00"/>
+        </rows>
+    </data>
+</document>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <data id="securities">
+        <rows>
+            <row SECID="EUR_RUB__TOM" BOARDID="CETS" SHORTNAME="EURRUB_TOM" LOTSIZE="1000" SETTLEDATE="2021-01-18"
+                 DECIMALS="4" FACEVALUE="1" MARKETCODE="CURR" MINSTEP="0.0025" PREVDATE="2021-01-14"
+                 SECNAME="EURRUB_TOM - EUR/РУБ" REMARKS="" STATUS="A" FACEUNIT="EUR" PREVPRICE="89.065"
+                 PREVWAPRICE="89.1762" CURRENCYID="RUB" LATNAME="EURRUB_TOM - EUR/RUB"/>
+        </rows>
+    </data>
+    <data id="marketdata">
+        <rows>
+            <row HIGHBID="" BIDDEPTH="" LOWOFFER="" OFFERDEPTH="" SPREAD="0" HIGH="" LOW="" OPEN="" LAST=""
+                 LASTCNGTOLASTWAPRICE="0" VALTODAY="0" VOLTODAY="0" VALTODAY_USD="" WAPRICE="" WAPTOPREVWAPRICE="0"
+                 CLOSEPRICE="" NUMTRADES="0" TRADINGSTATUS="N" UPDATETIME="09:15:04" BOARDID="CETS" SECID="EUR_RUB__TOM"
+                 WAPTOPREVWAPRICEPRCNT="0" BID="" BIDDEPTHT="" NUMBIDS="" OFFER="" OFFERDEPTHT="" NUMOFFERS="" CHANGE=""
+                 LASTCHANGEPRCNT="0" VALUE="0" VALUE_USD="" SEQNUM="5" QTY="0" TIME="09:15:04" PRICEMINUSPREVWAPRICE=""
+                 LASTCHANGE="0" LASTTOPREVPRICE="0" VALTODAY_RUR="" SYSTIME="2021-01-15 09:30:05" MARKETPRICE=""
+                 MARKETPRICETODAY="" MARKETPRICE2="" ADMITTEDQUOTE=""/>
+        </rows>
+    </data>
+    <data id="dataversion">
+        <rows>
+            <row data_version="4203" seqnum="5"/>
+        </rows>
+    </data>
+    <data id="marketdata_yields">
+        <rows>
+        </rows>
+    </data>
+</document>
