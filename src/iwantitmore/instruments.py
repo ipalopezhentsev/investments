@@ -172,7 +172,7 @@ class Bond:
             flows.append(CashFlow(amort.amort_date, amort.value))
         return round(100.0 * CashFlows(flows).irr(), 2) / 100.0
 
-
+#TODO: extract this and next to separate module?
 @dataclass(frozen=True)
 class CashFlow:
     """Flow of money at specified date"""

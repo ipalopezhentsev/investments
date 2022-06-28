@@ -14,7 +14,7 @@ from iwantitmore.instruments import Bond, AmortizationScheduleEntry, CouponSched
 ISS_URL = "https://iss.moex.com/iss/"
 logger = logging.getLogger(__name__)
 one_day = datetime.timedelta(days=1)
-http_params = {"timeout": 10}
+http_params = {"timeout": 100}
 
 
 def load_coupon_schedule_xml(isin: str) -> str:
@@ -187,11 +187,31 @@ class Instrument(ABC):
         except Exception as ex:
             raise ValueError(f"Error while parsing reply {reply}") from ex
 
+    def _parse_static_info(self, reply: str):
+        try:
+            root = ET.fromstring(reply)
+            rows = root.findall(".//data[@id='securities']//row")
+            if rows is None or len(rows) == 0:
+                return
+            row = rows[0]
+
+            self.name = row.get("SHORTNAME")
+        except Exception as ex:
+            raise ValueError(f"Error while parsing reply {reply}") from ex
+
     def load_intraday_quotes(self) -> IntradayQuote:
+        data = self._load_instrument_static_and_dynamic_info()
+        return self._parse_intraday_quotes(data.text)
+
+    def _load_instrument_static_and_dynamic_info(self):
         exchange_coords = self.get_exchange_coords()
         url = f"{ISS_URL}{exchange_coords}/securities/{self.code}.xml?iss.meta=off"
         data = requests.get(url, **http_params)
-        return self._parse_intraday_quotes(data.text)
+        return data
+
+    def resolve_shortname(self):
+        data = self._load_instrument_static_and_dynamic_info()
+        self._parse_static_info(data.text)
 
 
 class FXInstrument(Instrument):
@@ -212,10 +232,14 @@ class BondInstrument(Instrument):
     def get_exchange_coords(self):
         return f"engines/stock/markets/bonds/boards/TQCB"
 
+    def load_bond(self) -> Bond:
+        xml = load_coupon_schedule_xml(self.code)
+        return parse_coupon_schedule_xml(xml)
+
 
 class ShareInstrument(Instrument):
     def __init__(self, secid: str):
-        """Note ISIN's are not supported, only SECID ('Код ценной бумаги' on moex.com)"""
+        """Note ISIN's are not supported, only SECID ('Код ценной бумаги' on moex.com, e.g. "SBMX")"""
         super().__init__(secid)
 
     def get_exchange_coords(self):
