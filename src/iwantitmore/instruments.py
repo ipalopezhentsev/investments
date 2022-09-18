@@ -111,7 +111,7 @@ class Bond:
                     break
             return self.initial_notional * (1.0 - accum_prc / 100.0)
 
-    def accrued_coupon_on_date(self, dt: datetime.date) -> float:
+    def accrued_interest_on_date(self, dt: datetime.date) -> float:
         """returns coupon or its part accrued on dt (in ccy).
         "Накопленный купонный доход" in Russian. Is paid in addition to bond price when we buy it.
         """
@@ -159,7 +159,7 @@ class Bond:
         coupons, amortizations = self.payments_since_date(date_settle)
         if accrued_coupon is None:
             # for some dates it's date_buy which matches MOEX quotes, for some it's date_settle...
-            accrued_coupon = self.accrued_coupon_on_date(date_buy)
+            accrued_coupon = self.accrued_interest_on_date(date_buy)
         # when we buy, we must also pay coupon accrued up to this date
         price_buy = (price_buy_prc / 100.0) * self.notional_on_date(date_buy) + accrued_coupon
         if commission is not None:

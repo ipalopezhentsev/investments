@@ -24,12 +24,10 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.10",
     install_requires=[
-#TODO: add lower/upper boundary from PEP 440
-      "beautifulsoup4", "icalendar", "requests",
-#pipdeptree #otherwise pip-sync will remove it
-#pip-tools
+        # TODO: add lower/upper boundary from PEP 440
+        "beautifulsoup4>=4.10", "icalendar>=4.0", "requests>=2.27", "SQLAlchemy>=1.4"
     ],
     extras_require={
-        "tests": ["pytest", "pytest-cov"],
+        "tests": ["pytest", "pytest-cov", "pipdeptree", "pip-tools"],
     },
 )

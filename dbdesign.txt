@@ -1,0 +1,168 @@
+Tables:
+FLOW
+    ID
+    FLOW_TS
+    AMT
+    CCY
+    TYPE (trade, tax, coupon, nkd (accrued interest), exchange fee, broker fee, transfer)
+    TRADE_ID?
+    ACCOUNT_ID
+    SOURCE_ACCOUNT_ID?
+    UPLOAD_ID
+
+TRADE
+    ID
+    TRADE_TS
+    SETTLEMENT_DATE
+    INSTR_ID
+    STRIKE (price of 1)
+    NOTIONAL (with sign)
+    ACCNOTIONAL (=-NOTIONAL*STRIKE)
+    ACCCCY
+    UPLOAD_ID
+
+ALTERNATIVE VARIANT: TRADE + FLOW COMBINED:
+TRADE
+-----
+    ID (my sequence based so purely flow ones also receive unique id)
+    TRADE_TS
+    TRADETYPE (CASH, FXSPOT, BOND)
+    ACCOUNT_ID (for transfers - source account? like in iBank/Quicken...)
+    SOURCE_SYSTEM_TRADE_ID (null for non-trade related flows)
+    UPLOAD_ID
+    TODO: WE NEED STATUS AND EOD PROCESSES SO WE LOOK ONLY AT OPEN TRADES WHEN CALCULATING SUM AT DAY X!
+    Also it will allow subdividing profit into real (settled into cash) and projected (based on pv estimate of unfinished trade like bond...)
+
+
+
+CASH
+----
+    TRADE_ID
+    AMOUNT
+    CCY
+    PURPOSE (INFLOW, OUTFLOW, TAX, COUPON, AMORTIZATION, EXCH FEE, BROKER FEE, NKD)
+    REASON_TRADE_ID (for stuff where we know e.g. bond which produced NKD/EXCH/BROKER fees...)
+    REASON_INSTR_ID (we need it for coupons/dividends - they are not paid for particular trade but for whole num of shares...)
+    TRG_ACCOUNT_ID (for transfers. TODO: where is BTB side? it looks it should not be called trg_acct. there will
+    be just two accts with btb deals, one will have one acct as source another as trg, other in reverse?..)
+
+FXSPOT - in my variant these don't settle into cash - so we'll need to account for them while getting total ccys amount...
+TODO: BUT THEY WILL NEED TO SETTLE INTO CASH AND IT'S WHAT BROKER REPORTS HAVE AS WELL IF WE THINK. SO AFTER SOME FAR DATE
+when we need to get number of money we don't count all past FxSpot deals, we assume they alreday closed and settled
+into Cash so we just sum cash for ccys. And for FxSpots we calculate only open ones at day we're looking.
+----
+    TRADE_ID
+    SETTLEMENT_DATE (for consistency I may assume acc ccy disappears also on this date not on trade date, otw there
+    will be holes where one ccy left and another appeared after 1b)
+    STRIKE (price of 1)
+    NOTIONAL (with sign)
+    UNDER_CCY
+    ACCNOTIONAL (=-NOTIONAL*STRIKE)
+    ACC_CCY
+
+
+BOND
+----
+    TRADE_ID
+    SETTLEMENT_DATE
+    INSTR_ID (NULL?)
+    NOTIONAL (for bonds notional is price of 1 bond, not num of bonds)
+    NUM_SHARES
+    PRICE_OF_1
+    AMOUNT
+    REFERENCE_YTM
+    REFERENCE_DURATION
+
+COUPON_SCHEDULE - do I need it? does moex keep info forever? otherwise I can't calc ytm/duration.
+I queried bond which expired >1y ago, moex still returned its schedule so may postpone
+---------------
+    INSTR_ID
+    COUPON_DATE
+    RECORD_DATE
+    START_DATE
+    VALUE
+    YEARLY_PRC
+
+AMORTIZATION_SCHEDULE
+---------------------
+    INSTR_ID
+    AMORT_DATE
+    VALUE_PRC
+    VALUE
+
+
+INSTRUMENT
+----------
+    ID (Is it short name on moex? or seq?)
+    ISIN
+    SHORT_NAME
+    NAME
+    TYPE (SPOT, BOND, ETF)
+
+ACCOUNT
+-------
+    ID
+    NAME
+    CLIENT_ID
+    PARENT_ACC_ID? (NULL for main account else subaccounts)
+    CCY (needed? contradictory... at one hand 'external' accts have ccy (RUB, $) but FX acct inside investment acct has ccy more like securities or subaccts...)
+    (also, if ccy here then why Flow needs Ccy?)
+    COMMENT
+
+CLIENT (client of a program if we turn it into a site)
+------
+    ID
+    NAME
+
+UPLOAD (broker specific?...)
+------
+    ID
+    FILENAME?
+    ACCOUNT_ID (to main, not sub, account)
+    TYPE (monthly, daily) - e.g. don't let upload daily report if we loaded monthly.
+    TODO: can just add start/end date for which we upload, will decouple from one broker
+    TS (when we uploaded)
+
+SPOT_EOD
+--------
+    ID
+    DATE
+    INSTR_ID
+    OPEN
+    HIGH
+    LOW
+    CLOSE
+
+SPOT
+----
+    ID
+    INSTR_ID
+    TS
+    SPOT
+
+Queries:
+1) Find how much of each instrument I have at date X
+2) find how much I'm worth at date X - that's 1) multiplied by price of instruments at date X (or closest date to it)
+Another algorithm:
+    - Find trades open at date X
+    - For each such trade find its PV
+    - Sum PVs
+PV of a bond could be just num shares * priceof1
+PV of fxspot could be accnotional
+PV of cash is just amount
+
+Questions:
+1) how to express fx deals? 1 line or 2?
+2) how to express money transfer from subaccount to subaccount? from external to subaccount?
+3) are FX RUB, FX USD, FX EUR distinct subaccounts or just kinds of securities on one subaccount FX?
+4) Is RUB a "security" or is it special?
+5) if each ccy is subaccount, then should we create btb deals when buying eur for rub on both accounts?
+6) if I represent 'external' money source as account too, I can code transfers to investment acct as sells from
+'external' account and buys in e.g. fund or ccy subacct in inv acct. in this case it will be quick to find money
+i invested - just sum sells from 'external' account.
+7) maybe better join trades and flows tables? and represent flow without a trade as special trade?
+8) who needs 'external' account? we can just leave corresp side of trade as null
+9) if I join trade & flow, what would be trade id's of flow-only ops? I can leave existing trade id as opt field,
+and insert my own sequence based id...
+10) how do we represent sell of a security? it's not like we've given out some liability... We just sold N shares.
+Do we insert one trade as a bond with "-" and another trade as a cash flow received for this?

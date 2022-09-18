@@ -52,7 +52,7 @@ class TestMoex:
         # assert our calculations match those from exchange
         for coupon in bond.coupons:
             try:
-                assert coupon.value == bond.accrued_coupon_on_date(coupon.coupon_date)
+                assert coupon.value == bond.accrued_interest_on_date(coupon.coupon_date)
             except:
                 print(coupon)
                 raise
@@ -70,7 +70,7 @@ class TestMoex:
         # but if you read emission doc for the bond, it explicitly says we should use buy_date:
         # http://st.finam.ru/ipo/decision/7684_0_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%20%D1%8D%D0%BC%D0%B8%D1%81%D1%81%D0%B8%D0%B8_2016.PDF
         # (point 3.12)
-        assert bond.accrued_coupon_on_date(buy_date) == pytest.approx(accrued_coupon_moex, rel=1E-3)
+        assert bond.accrued_interest_on_date(buy_date) == pytest.approx(accrued_coupon_moex, rel=1E-3)
         ytm = bond.yield_to_maturity(103.51, buy_date, settle_date, accrued_coupon=accrued_coupon_moex)
         # corresponds to real MOEX ytm on that date for the bond
         moex_calc_value = 0.0640
@@ -95,7 +95,7 @@ class TestMoex:
         # http://st.finam.ru/ipo/decision/7684_0_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%20%D1%8D%D0%BC%D0%B8%D1%81%D1%81%D0%B8%D0%B8_2016.PDF
         # (point 3.12)
         # so looks like moex error
-        assert bond.accrued_coupon_on_date(settle_date) == accrued_coupon_moex
+        assert bond.accrued_interest_on_date(settle_date) == accrued_coupon_moex
         ytm = bond.yield_to_maturity(103.34, buy_date, settle_date,
                                      accrued_coupon=accrued_coupon_moex)
         moex_calc_value = 0.0635
@@ -115,7 +115,7 @@ class TestMoex:
         # http://st.finam.ru/ipo/decision/7684_0_%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%20%D1%8D%D0%BC%D0%B8%D1%81%D1%81%D0%B8%D0%B8_2016.PDF
         # (point 3.12)
         # so looks like moex error
-        assert bond.accrued_coupon_on_date(settle_date) == accrued_coupon_moex
+        assert bond.accrued_interest_on_date(settle_date) == accrued_coupon_moex
         ytm = bond.yield_to_maturity(103.2, buy_date, settle_date,
                                      accrued_coupon=accrued_coupon_moex)
         moex_calc_value = 0.0624

@@ -124,6 +124,7 @@ def main():
                     "and sends meeting invites to specified e-mail that correspond to "
                     "bond's coupons and notional amortizations",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+# TODO: add email server address
     parser.add_argument("--email", required=True, help="E-mail address to which send invites")
     parser.add_argument("isins", help="ISIN codes of bonds on MOEX", nargs="+", metavar="ISIN")
     args = parser.parse_args()

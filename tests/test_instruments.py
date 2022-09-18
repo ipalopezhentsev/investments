@@ -107,7 +107,7 @@ class TestBond:
         coupon_days_wrong = (coup2_date - coupons[1].start_date).days
         expected_coupon1_wrong = round((coupon_days_wrong / YEAR_BASE) *
                                        (coupons[0].yearly_prc / 100.0) * notional_on_coup2, 2)
-        assert b.accrued_coupon_on_date(coup2_date) == pytest.approx(expected_coupon1)
+        assert b.accrued_interest_on_date(coup2_date) == pytest.approx(expected_coupon1)
         assert expected_coupon1 != pytest.approx(expected_coupon1_wrong)
 
     def test_payments_since_date(self):
@@ -140,7 +140,7 @@ class TestBond:
         assert ytm == pytest.approx(0.0821)
         # assert ytm definition holds
         yf = ((coup2_date - buy_date).days / YEAR_BASE)
-        accrued = b.accrued_coupon_on_date(buy_date)
+        accrued = b.accrued_interest_on_date(buy_date)
         fv_initial_investment = (buy_price * 10 + accrued) * (1.0 + ytm) ** yf
         # no need to accrue since they already are on correct date
         fv_payments = coupons[1].value + amortizations[0].value
